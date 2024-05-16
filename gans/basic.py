@@ -26,7 +26,6 @@ class FMDS(Dataset):
         if transforms is not None:
             img = self.transforms(img)
             label = torch.Tensor([label]).long()
-        img = img/255.0
         return img, label
     
 
@@ -35,25 +34,30 @@ def load_train_val_dataloaders(name, batch_size=256):
         transforms.Resize(32),
         transforms.RandomHorizontalFlip(p=0.5),
         transforms.ToTensor(),
+        transforms.Normalize((0.5,), (0.5,))
     ])
     train_ds = FMDS(name, dtype="train", transforms=ct)
-    val_ds = FMDS(name, dtype="test", transforms=ct)
+    #val_ds = FMDS(name, dtype="test", transforms=ct)
     train_dl = DataLoader(train_ds, batch_size=batch_size, shuffle=True, drop_last=True, num_workers=4)
-    val_dl = DataLoader(val_ds, batch_size=batch_size, shuffle=False, drop_last=False, num_workers=4)
-    return train_dl, val_dl 
+    #val_dl = DataLoader(val_ds, batch_size=batch_size, shuffle=False, drop_last=False, num_workers=4)
+    return train_dl#val_dl 
 
 
 def conv(ni, nf, ks=3, stride=2, act=True, norm=True):
     res = [nn.Conv2d(ni, nf, stride=stride, kernel_size=ks, padding=ks//2)]
-    if norm: res = res+[nn.BatchNorm2d(nf)]
-    if act: res = res+[nn.LeakyReLU(0.2)]
+    if norm: 
+        res = res+[nn.BatchNorm2d(nf)]
+    if act: 
+        res = res+[nn.LeakyReLU(0.2)]
     return nn.Sequential(*res)
 
 
 def deconv(ni, nf, ks=3, stride=2, pad=0, act=True, norm=True):
     res = [nn.ConvTranspose2d(ni, nf, stride=stride, kernel_size=ks, padding=pad)]
-    if norm: res = res+[nn.BatchNorm2d(nf)]
-    if act: res = res+[nn.ReLU()]
+    if norm: 
+        res = res+[nn.BatchNorm2d(nf)]
+    if act: 
+        res = res+[nn.ReLU()]
     return nn.Sequential(*res)
 
 
@@ -120,6 +124,8 @@ class GAN(pl.LightningModule):
         return self.generator(z)
 
     def generator_step(self, batch_size):
+        # Genertor creates an image which discriminator says them as 
+        # fake but we need to consider them as real and calculate loss. 
         z = torch.randn(batch_size, self.latent_dim, 1, 1).to(self.device)
         fake_images = self.generator(z)
         fake_labels = torch.ones(batch_size, 1).to(self.device)
@@ -128,6 +134,9 @@ class GAN(pl.LightningModule):
         return g_loss
 
     def discriminator_step(self, real_images):
+        # take a batch of images and consider their output as 1 
+        # take a batch of images from genertor and consider them as 0
+        # calculate both the losses and backprop 
         batch_size = real_images.size(0)
         real_labels = torch.ones(batch_size, 1).to(self.device)
         fake_labels = torch.zeros(batch_size, 1).to(self.device)
@@ -136,7 +145,8 @@ class GAN(pl.LightningModule):
         d_loss_real = self.criterion(outputs, real_labels)
 
         z = torch.randn(batch_size, self.latent_dim, 1, 1).to(self.device)
-        fake_images = self.generator(z)
+        with torch.no_grad():
+            fake_images = self.generator(z)
         outputs = self.discriminator(fake_images.detach())
         d_loss_fake = self.criterion(outputs, fake_labels)
 
@@ -146,7 +156,6 @@ class GAN(pl.LightningModule):
     def training_step(self, batch, batch_idx):
         real_images, _ = batch
         opt_g, opt_d = self.optimizers()
-        self.toggle_optimizer
 
         # Train generator
         self.toggle_optimizer(opt_g)
@@ -170,14 +179,14 @@ class GAN(pl.LightningModule):
 
     def configure_optimizers(self):
         lr = self.lr
-        opt_g = optim.Adam(self.generator.parameters(), lr=lr)
-        opt_d = optim.Adam(self.discriminator.parameters(), lr=lr)
+        opt_g = optim.Adam(self.generator.parameters(), lr=lr, betas=(0.5, 0.999))
+        opt_d = optim.Adam(self.discriminator.parameters(), lr=lr, betas=(0.5, 0.999))
         return [opt_g, opt_d]
     
     def on_train_epoch_end(self):
-        z = self.z
+        z = self.z.to(self.device)
         sample_imgs = self.generator(z).detach().cpu()
-        grid = torchvision.utils.make_grid(sample_imgs)
+        grid = torchvision.utils.make_grid(sample_imgs, normalize=True)
         self.logger.experiment.add_image("generated_images", grid, self.current_epoch)
         # plt.figure(figsize=(8, 8))
         # plt.imshow(grid.permute(1, 2, 0))
@@ -193,18 +202,18 @@ if __name__ == "__main__":
     #print(fake_vec.shape)
 
     print("Load_model")
-    pipeline = GAN(100, 0.001)
+    pipeline = GAN(100, 0.0005*4)
     
     print("Load trainer")
     tqdm_callback = pl.callbacks.TQDMProgressBar(refresh_rate=4)
-    trainer = pl.Trainer(max_epochs=100, 
-                         accelerator="cpu",
+    trainer = pl.Trainer(max_epochs=500, 
+                         accelerator="gpu",
                          enable_model_summary=True,
                          #fast_dev_run=True,
                          logger=[pl.loggers.TensorBoardLogger("logs", name="basic")],
                          callbacks=[tqdm_callback])
     
     print("Load data")
-    train_dl, val_dl = load_train_val_dataloaders("fashion_mnist", batch_size=256)
+    train_dl = load_train_val_dataloaders("fashion_mnist", batch_size=1024)
 
-    trainer.fit(pipeline, train_dataloaders=train_dl, val_dataloaders=val_dl)
+    trainer.fit(pipeline, train_dataloaders=train_dl)
