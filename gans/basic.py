@@ -202,7 +202,7 @@ if __name__ == "__main__":
     #print(fake_vec.shape)
 
     print("Load_model")
-    pipeline = GAN(100, 0.0005*4)
+    pipeline = GAN(100, 0.0005)
     
     print("Load trainer")
     tqdm_callback = pl.callbacks.TQDMProgressBar(refresh_rate=4)
