@@ -9,4 +9,5 @@ z_dim = 128  # should be 512 in original paper
 in_channels = 128  # should be 512 in original paper
 lambda_gp= 10
 progressive_epochs = [30] * len(batch_sizes)
+total_images = 70000
 factors = [1, 1, 1, 1, 1 / 2, 1 / 4]#[1, 1, 1, 1, 1 / 2, 1 / 4, 1 / 8, 1 / 16] #add 1/32 if u want 1024 images.

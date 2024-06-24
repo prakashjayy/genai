@@ -18,6 +18,7 @@ class PROGAN(pl.LightningModule):
         self.generator = Generator(self.hparams.z_dim, self.hparams.in_channels, self.hparams.factors, img_channels=self.hparams.image_channels)
         self.discriminator = Discriminator(in_channels = self.hparams.in_channels, factors=self.hparams.factors, img_channels=self.hparams.image_channels)
         self.automatic_optimization = False
+        self.z = torch.randn(16, self.hparams.z_dim, 1, 1).to(self.device)
         self.step = 0
         self.alpha = 0
         #self.z = torch.randn(16, self.latent_dim, 1, 1).to(self.device)
@@ -66,13 +67,15 @@ class PROGAN(pl.LightningModule):
         return loss_critic
 
     def training_step(self, batch, batch_idx):
-        breakpoint()
-        real_images, _ = batch
         opt_g, opt_d = self.optimizers()
+        self.alpha += batch.size(0) / (
+            (self.hparams.progressive_epochs[self.step] * 0.5) * self.hparams.total_images
+        )
+        alpha = min(self.alpha, 1)
 
         # Train discriminator
         self.toggle_optimizer(opt_d)
-        d_loss= self.discriminator_step(real_images, self.alpha, self.step)
+        d_loss= self.discriminator_step(batch, alpha, self.step)
         self.manual_backward(d_loss)
         opt_d.step()
         opt_d.zero_grad()
@@ -80,7 +83,7 @@ class PROGAN(pl.LightningModule):
 
         # Train generator
         self.toggle_optimizer(opt_g)
-        g_loss = self.generator_step(real_images.size(0), self.alpha, self.step)
+        g_loss = self.generator_step(batch.size(0), alpha, self.step)
         self.manual_backward(g_loss)
         opt_g.step()
         opt_g.zero_grad()
@@ -88,7 +91,9 @@ class PROGAN(pl.LightningModule):
 
         self.log('g_loss', g_loss, on_step=True, on_epoch=True, prog_bar=True, logger=True)
         self.log('d_loss', d_loss, on_step=True, on_epoch=True, prog_bar=True, logger=True)
-        self.log('step', torch.Tensor(self.step).long(), on_step=True, on_epoch=True, prog_bar=True, logger=True)
+        self.log('step', self.step, on_step=True, on_epoch=True, prog_bar=True, logger=True)
+        self.log('alpha', self.alpha, on_step=True, on_epoch=True, prog_bar=True, logger=True)
+        self.log('image_size', batch.size(2), on_step=True, on_epoch=True, prog_bar=True, logger=True)
 
 
     def configure_optimizers(self):
@@ -104,9 +109,8 @@ class PROGAN(pl.LightningModule):
         self.logger.experiment.add_image("generated_images", grid, self.current_epoch)
     
     def train_dataloader(self):
-        #TODO: we need to define image_size and batch_size dynamically here. 
-        image_size = self.hparams.image_size
-        batch_size = self.hparams.batch_sizes[0]
+        image_size = 2**(2+self.step)
+        batch_size = self.hparams.batch_sizes[self.step]
         train_dl = get_dl(self.hparams.image_root, (image_size, image_size), batch_size=batch_size)
         if self.current_epoch !=0:
             self.step+=1
