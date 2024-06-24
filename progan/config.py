@@ -1,0 +1,12 @@
+image_root = '/root/prakash/data/ffhq/thumbnails128x128/'
+start_train_at_img_size = 4
+device = "cuda"
+lr = 1e-3
+batch_sizes = [32, 32, 32, 16, 16, 16]#[32, 32, 32, 16, 16, 16, 8, 8] #you can use [32, 32, 32, 16, 16, 16, 16, 8, 4] for example if you want to train until 1024x1024, but again this numbers depend on your vram
+image_size = 128
+image_channels = 3
+z_dim = 128  # should be 512 in original paper
+in_channels = 128  # should be 512 in original paper
+lambda_gp= 10
+progressive_epochs = [30] * len(batch_sizes)
+factors = [1, 1, 1, 1, 1 / 2, 1 / 4]#[1, 1, 1, 1, 1 / 2, 1 / 4, 1 / 8, 1 / 16] #add 1/32 if u want 1024 images.
