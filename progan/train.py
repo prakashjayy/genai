@@ -18,26 +18,26 @@ class PROGAN(pl.LightningModule):
         self.generator = Generator(self.hparams.z_dim, self.hparams.in_channels, self.hparams.factors, img_channels=self.hparams.image_channels)
         self.discriminator = Discriminator(in_channels = self.hparams.in_channels, factors=self.hparams.factors, img_channels=self.hparams.image_channels)
         self.automatic_optimization = False
-        self.z = torch.randn(16, self.hparams.z_dim, 1, 1).to(self.device)
+        self.z = torch.randn(64, self.hparams.z_dim, 1, 1).to(self.device)
         self.step = 0
         self.alpha = 0
         #self.z = torch.randn(16, self.latent_dim, 1, 1).to(self.device)
 
-    def forward(self, z):
-        return self.generator(z)
+    def forward(self, z, alpha, step):
+        return self.generator(z, alpha, step)
     
-    def generate_examples(self, steps, save_dir, n=100):
-        self.generator.eval()
-        alpha = 1.0
-        for i in range(n):
-            with torch.no_grad():
-                noise = torch.randn(1, self.hparams.z_dim, 1, 1).to(self.device)
-                img = self.generator(noise, alpha, steps)
-                #TODO: we need to store them in the run 
-                if not os.path.exists(save_dir):
-                    os.makedirs(save_dir)
-                save_image(img*0.5+0.5, f"{save_dir}/img_{i}.png")
-        self.generator.train()
+    # def generate_examples(self, steps, save_dir, n=100):
+    #     self.generator.eval()
+    #     alpha = 1.0
+    #     for i in range(n):
+    #         with torch.no_grad():
+    #             noise = torch.randn(1, self.hparams.z_dim, 1, 1).to(self.device)
+    #             img = self.generator(noise, alpha, steps)
+    #             #TODO: we need to store them in the run 
+    #             if not os.path.exists(save_dir):
+    #                 os.makedirs(save_dir)
+    #             save_image(img*0.5+0.5, f"{save_dir}/img_{i}.png")
+    #     self.generator.train()
 
     def generator_step(self, batch_size, alpha, step):
         # Genertor creates an image which discriminator says them as 
@@ -104,16 +104,17 @@ class PROGAN(pl.LightningModule):
     
     def on_train_epoch_end(self):
         z = self.z.to(self.device)
-        sample_imgs = self.generator(z).detach().cpu()
+        sample_imgs = self(z, 1, self.step).detach().cpu()
         grid = torchvision.utils.make_grid(sample_imgs, normalize=True)
         self.logger.experiment.add_image("generated_images", grid, self.current_epoch)
     
     def train_dataloader(self):
+        print(f"Loading Dataloader: {self.current_epoch}")
+        if self.current_epoch !=0:
+            self.step+=1
         image_size = 2**(2+self.step)
         batch_size = self.hparams.batch_sizes[self.step]
         train_dl = get_dl(self.hparams.image_root, (image_size, image_size), batch_size=batch_size)
-        if self.current_epoch !=0:
-            self.step+=1
         self.alpha = 0
         return train_dl
 
