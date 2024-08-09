@@ -22,6 +22,8 @@ matplotlib = "^3.9.0"
 scipy = "^1.13.1"
 gigagan-pytorch = "^0.2.20"
 mmengine = "^0.10.4"
+fastcore = "^1.6.3"
+pillow = "^10.4.0"
 [tool.poetry.group.dev.dependencies]
 ipython = "^8.25.0"
 notebook = "6.0.3"

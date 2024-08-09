@@ -6,3 +6,6 @@ Understanding how diffusion / GAN models work
 - [SDXL](https://arxiv.org/abs/2307.01952)
 - [Gligen](https://arxiv.org/abs/2301.07093)
 - [Picsart alpha](https://arxiv.org/abs/2310.00426)
+
+## Datasets
+- Download [ffhq] using  `python data/ffhq.py --json --images --thumbs --num_threads 64` 
