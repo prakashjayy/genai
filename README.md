@@ -1,8 +1,13 @@
 # genai
 
-Try to implement generative AI models using PyTorch on tiny datasets. 
+Try to implement all generative AI models in image space using PyTorch on tiny datasets. Today we have 
+- GANs 
+- [x]VAEs 
+- [x]Diffusions 
+- AutoRegressive models 
+- Normalizing Flows 
+- Score Matching 
+- Consistency Models 
+- Energy Based Models 
 
-## Updates 
-- understanding GAN loss functions 
-- diffusion forward pass 
-- implementing variational autoencoders 
+
