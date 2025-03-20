@@ -1,13 +1,43 @@
 # genai
 
 Try to implement all generative AI models in image space using PyTorch on tiny datasets. Today we have 
-- [ ]GANs 
+- [ ] GANs 
 - [x] VAEs 
 - [x] Diffusions 
+- []  VQ-VAE
 - [ ] AutoRegressive models 
 - [ ] Normalizing Flows 
 - [ ] Score Matching 
 - [ ] Consistency Models 
 - [ ] Energy Based Models 
 
+
+
+
+## setup using uv 
+- first install asdf 
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+uv python install 3.10                   
+
+uv python pin 3.10.16
+
+source .venv/bin/activate
+
+uv pip install -r requirements.txt
+
+uv pip install package1 package2 package3
+
+# Compile requirements.txt from pyproject.toml
+uv pip compile pyproject.toml -o requirements.txt
+
+# Sync your environment with requirements.txt
+uv pip sync requirements.txt
+
+
+## update all packages 
+uv pip install --upgrade $(uv pip list --outdated | cut -d' ' -f1)
+```
 
