@@ -4,10 +4,11 @@ Try to implement all generative AI models in image space using PyTorch on tiny d
 - [ ] GANs 
 - [x] VAEs 
 - [x] Diffusions 
-- []  VQ-VAE
+- [x] VQVAE
+- [ ] VQGAN - on going
 - [ ] AutoRegressive models 
 - [ ] Normalizing Flows 
-- [ ] Score Matching 
+- [ ] Score Matching - on going
 - [ ] Consistency Models 
 - [ ] Energy Based Models 
 
@@ -23,6 +24,8 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 uv python install 3.10                   
 
 uv python pin 3.10.16
+
+uv venv
 
 source .venv/bin/activate
 
