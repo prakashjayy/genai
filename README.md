@@ -5,8 +5,8 @@ Try to implement all generative AI models in image space using PyTorch on tiny d
 - [x] VAEs 
 - [x] Diffusions 
 - [x] VQVAE
-- [ ] VQGAN - on going
-- [ ] AutoRegressive models 
+- [x] VQGAN
+- [x] AutoRegressive models 
 - [ ] Normalizing Flows 
 - [ ] Score Matching - on going
 - [ ] Consistency Models 
