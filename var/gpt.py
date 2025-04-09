@@ -521,9 +521,12 @@ if __name__ == "__main__":
     ar_model = Transformer(ar_config).cuda()
     ar_model.initialize_weights()
     ar_model.setup_caches(max_batch_size=128, max_seq_length=8*8, dtype=torch.float32)
-    print(ar_model)
+    ar_model.eval()
+    print(ar_model.training)
 
-    idx = torch.randint(0, 2048, (128, 8*8)).cuda()
-    cond_idx = torch.randint(0, 10, (128,)).cuda()
-    input_pos = torch.arange(64).long().cuda()
-    ar_model(idx[:, :-1], cond_idx, input_pos, targets=idx)
+    for _ in range(10):
+        idx = torch.randint(0, 2048, (128, 8*8)).cuda()
+        cond_idx = torch.randint(0, 10, (128,)).cuda()
+        input_pos = torch.arange(64).long().cuda()
+        logits, loss = ar_model(idx[:, :-1], cond_idx, input_pos, targets=idx)
+        print(logits.shape, loss)
