@@ -1,13 +1,17 @@
-# genai
+# genai - image
+
+Most research papers present mathematical equations—sometimes distilled to just one crucial formula—whose effectiveness is evaluated across various datasets and compared against existing methods. While authors typically release their code, navigating through the boilerplate can be challenging. This repository implements foundational architectures and incorporates improvements based on research across different image generative AI tasks. By presenting code alongside equations, it aims to clarify how concepts integrate within the broader framework, enhancing understanding of the underlying principles.
+
+This is mostly my personal notes. 
 
 Try to implement all generative AI models in image space using PyTorch on tiny datasets. Today we have 
 - [ ] GANs 
 - [x] VAEs 
-- [x] Diffusions 
+- [x] Diffusion - UNet based and Diffusion based. 
 - [x] VQVAE
 - [x] VQGAN
 - [x] AutoRegressive models 
-- [ ] Normalizing Flows 
+- [ ] Normalizing and continous Flows 
 - [ ] Score Matching - on going
 - [ ] Consistency Models 
 - [ ] Energy Based Models 
