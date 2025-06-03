@@ -6,6 +6,10 @@
  
 
 ## Papers to read 
-- The concept of score matching was first introduced by Aapo Hyvärinen in his 2005 paper "Estimation of non-normalized statistical models by score matching." However, this wasn't specifically for images.
+- The concept of score matching was first introduced by Aapo Hyvärinen in his 2005 paper "Estimation of non-normalized statistical models by score matching." However, this wasn't specifically for targeted for machine learning.
 - For images specifically, the early application of score matching principles came through Denoising Score Matching (DSM), which was introduced in the 2011 paper "A Connection Between Score Matching and Denoising Autoencoders" by Pascal Vincent. However, this was still more theoretical and wasn't specifically focused on generating high-quality images.
+- The initial paper called `sliced score matching` by Yang Song, Sahaj Garg, Jiaxin Shi and Stefano Ermon, showed that we can train a score based generative modelling efficiently.
 - The first major paper that effectively implemented score matching specifically for image generation was "Generative Modeling by Estimating Gradients of the Data Distribution" by Yang Song and Stefano Ermon in 2019 (NeurIPS). This paper introduced Noise Conditional Score Networks (NCSN) which made score matching practically effective for image generation by using multiple noise levels.
+- Finally we have `Score-Based Generative Modeling through Stochastic Differential Equations` by Yang Song, Jascha Sohl-Dickstein, Diederik P. Kingma, Abhishek Kumar, Stefano Ermon, Ben Poole.
+
+
