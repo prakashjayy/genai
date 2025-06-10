@@ -5,3 +5,7 @@ matplotlib
 tqdm
 ipykernel
 lpips
+diffusers
+torchmetrics
+torch-fidelity
+torchdiffeq
