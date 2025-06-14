@@ -8,4 +8,4 @@ The [seaweed APT1](https://arxiv.org/pdf/2501.08316) released on 2025 shows a po
 $$
 L_{aR1} = \|D(x, c) - D(N(x, \sigma I), c)\|_2^2
 $$
-- Post evaluation, the authors found that the model outputs more realistic and cinematic photos and videos compared to other distilled diffusion models but their structural integrety and alignment to text took a hit. this more common in videos compared to images. 
+- Post evaluation, the authors found that the model outputs more realistic and cinematic photos and videos (visual fidelity) compared to other distilled diffusion models but their structural integrety and alignment to text took a hit. this more common in videos compared to images. 
