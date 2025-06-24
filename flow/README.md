@@ -37,7 +37,7 @@ To understand flow based models u need to be good at solving differential equati
 - FFJORD 
 - Flow Matching 
 - [x] [Rectified Flow](https://arxiv.org/pdf/2209.03003)
-- [] MeanFlow
+- [x] [MeanFlow](https://arxiv.org/pdf/2505.13447)
 
      
     ## Resources 
