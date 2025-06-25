@@ -9,3 +9,4 @@ diffusers
 torchmetrics
 torch-fidelity
 torchdiffeq
+fastcore

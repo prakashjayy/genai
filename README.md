@@ -4,20 +4,6 @@ Most research papers present mathematical equations—sometimes distilled to jus
 
 This is mostly my personal notes. 
 
-Try to implement all generative AI models in image space using PyTorch on tiny datasets. Today we have 
-- [ ] GANs 
-- [x] VAEs 
-- [x] Diffusion - UNet based and Diffusion based. 
-- [x] VQVAE
-- [x] VQGAN
-- [x] AutoRegressive models 
-- [ ] Normalizing and continous Flows 
-- [ ] Score Matching - on going
-- [ ] Consistency Models 
-- [ ] Energy Based Models 
-
-
-
 
 ## setup using uv 
 - first install asdf 
@@ -25,9 +11,9 @@ Try to implement all generative AI models in image space using PyTorch on tiny d
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
-uv python install 3.10                   
+uv python install 3.11                   
 
-uv python pin 3.10.16
+uv python pin 3.11.13
 
 uv venv
 
@@ -48,3 +34,4 @@ uv pip sync requirements.txt
 uv pip install --upgrade $(uv pip list --outdated | cut -d' ' -f1)
 ```
 
+## 
