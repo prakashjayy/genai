@@ -1,0 +1,60 @@
+[project]
+name = "genai"
+version = "0.1.0"
+requires-python = ">=3.10"
+description = ""
+readme = "README.md"
+dependencies = []
+
+[project.optional-dependencies]
+# macOS (Apple Silicon / Intel) — MPS acceleration built into the CPU wheel
+# Linux CPU-only
+torch-cpu = [
+  "torch>=2.6.0",
+  "torchvision>=0.21.0",
+  "torchaudio>=2.6.0",
+]
+# Linux with NVIDIA GPU (CUDA 12.4)
+torch-cuda = [
+  "torch>=2.6.0",
+  "torchvision>=0.21.0",
+  "torchaudio>=2.6.0",
+]
+
+[tool.uv]
+# Prevent accidental co-installation of both extras
+conflicts = [
+  [
+    { extra = "torch-cpu" },
+    { extra = "torch-cuda" },
+  ],
+]
+
+[tool.uv.sources]
+torch = [
+  # macOS always uses CPU index (MPS is bundled)
+  { index = "pytorch-cpu", marker = "sys_platform == 'darwin'" },
+  # Linux explicit extras — must exclude darwin to avoid conflicting indexes
+  { index = "pytorch-cpu", extra = "torch-cpu", marker = "sys_platform != 'darwin'" },
+  { index = "pytorch-cuda", extra = "torch-cuda", marker = "sys_platform != 'darwin'" },
+]
+torchvision = [
+  { index = "pytorch-cpu", marker = "sys_platform == 'darwin'" },
+  { index = "pytorch-cpu", extra = "torch-cpu", marker = "sys_platform != 'darwin'" },
+  { index = "pytorch-cuda", extra = "torch-cuda", marker = "sys_platform != 'darwin'" },
+]
+torchaudio = [
+  { index = "pytorch-cpu", marker = "sys_platform == 'darwin'" },
+  { index = "pytorch-cpu", extra = "torch-cpu", marker = "sys_platform != 'darwin'" },
+  { index = "pytorch-cuda", extra = "torch-cuda", marker = "sys_platform != 'darwin'" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cuda"
+url = "https://download.pytorch.org/whl/cu124"
+explicit = true

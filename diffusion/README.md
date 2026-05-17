@@ -1,0 +1,6 @@
+- `00_transformers.ipynb` — encoder, encoder-decoder, and autoregressive transformer architectures; image tokenization and attention.
+- `01_vae.ipynb` — variational autoencoders, β-VAE, and cyclical annealing schedules.
+- `02_diffusion.ipynb` — derives the DDPM forward/reverse process from the VAE ELBO and implements it on MNIST.
+- `03_vqvae.ipynb` — vector quantization, codebook learning, and the commitment loss.
+- `04_ddim.ipynb` — DDIM formulation: larger sampling steps without retraining.
+- `05_dit.ipynb` — Diffusion Transformers (DiT) trained on MNIST with label conditioning.

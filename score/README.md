@@ -1,3 +1,5 @@
+## Score 
+
 - Excellent blog on derivation of score function [link](https://andrewcharlesjones.github.io/journal/21-score-matching.html). my claude [chat](https://claude.ai/chat/ddcc2f95-0ac7-4d37-9db1-41a36917d496) on the same. 
 - Another average blog https://jmtomczak.github.io/blog/16/16_score_matching.html
 - List of videos to watch [collection from a twitter user](https://x.com/RisingSayak/status/1822121590558953531)

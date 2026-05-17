@@ -1,37 +1,43 @@
-# genai - image
+# genai
 
-Most research papers present mathematical equations—sometimes distilled to just one crucial formula—whose effectiveness is evaluated across various datasets and compared against existing methods. While authors typically release their code, navigating through the boilerplate can be challenging. This repository implements foundational architectures and incorporates improvements based on research across different image generative AI tasks. By presenting code alongside equations, it aims to clarify how concepts integrate within the broader framework, enhancing understanding of the underlying principles.
+Different approaches to image and video generation.
 
-This is mostly my personal notes. 
+## Notebooks
 
+**Score**
+- `score/00_vector_field.ipynb`
+- `score/01_kde.ipynb`
+- `score/02_guassian_vector_fields.ipynb`
+- `score/03_score_matching_base.ipynb`
+- `score/04_connecting_denoising_autoencoders_with_sm.ipynb`
 
-## setup using uv 
-- first install asdf 
+**Diffusion**
+- `diffusion/00_transformers.ipynb`
+- `diffusion/01_vae.ipynb`
+- `diffusion/02_diffusion.ipynb`
+- `diffusion/03_vqvae.ipynb`
+- `diffusion/04_ddim.ipynb`
+- `diffusion/05_dit.ipynb`
+
+**Flow**
+- `flow/01_flow.ipynb`
+- `flow/02_mean_flow.ipynb`
+
+**GANs**
+- `gans/00_gan_loss_understanding.ipynb`
+
+**VAR**
+- `var/01_vqgan.ipynb`
+- `var/02_label_cond_ar.ipynb`
+
+**GRN**
+- `grn/hbq.ipynb`
+
+---
+
+## Setup
 
 ```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
-uv python install 3.11                   
-
-uv python pin 3.11.13
-
-uv venv
-
-source .venv/bin/activate
-
-uv pip install -r requirements.txt
-
-uv pip install package1 package2 package3
-
-# Compile requirements.txt from pyproject.toml
-uv pip compile pyproject.toml -o requirements.txt
-
-# Sync your environment with requirements.txt
-uv pip sync requirements.txt
-
-
-## update all packages 
-uv pip install --upgrade $(uv pip list --outdated | cut -d' ' -f1)
+uv sync --extra torch-cpu   # macOS or Linux CPU
+uv sync --extra torch-cuda  # Linux with NVIDIA GPU
 ```
-
-## 

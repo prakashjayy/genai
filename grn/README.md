@@ -1,0 +1,1 @@
+[GRN](https://arxiv.org/pdf/2604.13030) — replaces VQ codebook lookups with hierarchical binary quantization (HBQ), where cascading binary bisection halves the reconstruction error each round, beating continuous VAEs at 4× compression.
