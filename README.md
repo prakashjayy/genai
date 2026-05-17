@@ -4,34 +4,17 @@ Different approaches to image and video generation.
 
 ## Notebooks
 
-**Score**
-- `score/00_vector_field.ipynb`
-- `score/01_kde.ipynb`
-- `score/02_guassian_vector_fields.ipynb`
-- `score/03_score_matching_base.ipynb`
-- `score/04_connecting_denoising_autoencoders_with_sm.ipynb`
+**Score** — training a network to estimate the score function and use it to generate samples
 
-**Diffusion**
-- `diffusion/00_transformers.ipynb`
-- `diffusion/01_vae.ipynb`
-- `diffusion/02_diffusion.ipynb`
-- `diffusion/03_vqvae.ipynb`
-- `diffusion/04_ddim.ipynb`
-- `diffusion/05_dit.ipynb`
+**Diffusion** — forward noising process reversed by a learned denoiser; covers DDPM, DDIM, VAE, VQ-VAE, and DiT
 
-**Flow**
-- `flow/01_flow.ipynb`
-- `flow/02_mean_flow.ipynb`
+**Flow** — invertible transformations that map noise to data; covers normalizing flows, flow matching, and MeanFlow
 
-**GANs**
-- `gans/00_gan_loss_understanding.ipynb`
+**GANs** — generator vs discriminator adversarial training for single-step generation
 
-**VAR**
-- `var/01_vqgan.ipynb`
-- `var/02_label_cond_ar.ipynb`
+**VAR** — autoregressive image generation over discrete VQ tokens with a GPT backbone
 
-**GRN**
-- `grn/hbq.ipynb`
+**GRN** — hierarchical binary quantization that beats continuous VAEs at 4× compression
 
 ---
 
